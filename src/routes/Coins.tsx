@@ -27,6 +27,7 @@ const Coin = styled.li`
   gap: 10px;
   margin-bottom: 10px;
   background-color: #ffffffa8;
+  color: ${(props) => props.theme.coinTextColor};
   padding: 5px 8px;
   border-radius: 7px;
   min-width: 400px;
@@ -57,8 +58,15 @@ interface CoinTypes {
   type: string;
 }
 
-function Coins() {
+interface ICoinsProps {
+  isDark: boolean;
+  toggleDark: () => void;
+}
+
+function Coins({ isDark, toggleDark }: ICoinsProps) {
+  // react query 활용
   const { isLoading, data } = useQuery<CoinTypes[]>("allCoins", fetchCoins);
+  // react query 활용하지 않은 방법
   // const [coins, setCoins] = useState<CoinTypes[]>([]);
   // const [loading, setLoading] = useState(true);
   // // 코인 API 받아오기
@@ -75,6 +83,7 @@ function Coins() {
     <Container>
       <Header>
         <Title>Coins</Title>
+        <button onClick={toggleDark}>Toggle</button>
       </Header>
       {isLoading ? (
         <p>Loading...</p>

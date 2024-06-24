@@ -2,6 +2,8 @@ import styled, { createGlobalStyle } from "styled-components";
 import { useState } from "react";
 import { ReactQueryDevtools } from "react-query/devtools";
 import Router from "./Router";
+import { ThemeProvider } from "styled-components";
+import { lightTheme, darkTheme } from "./theme";
 
 // 모오든 항목에 적용되는 스타일 설정
 const GlobalStyle = createGlobalStyle`
@@ -67,11 +69,15 @@ a {
 `;
 
 function App() {
+  const [isDark, setIsDark] = useState(false);
+  const toggleDark = () => setIsDark((current) => !current);
   return (
     <>
-      <GlobalStyle />
-      <Router />
-      <ReactQueryDevtools />
+      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+        <GlobalStyle />
+        <Router isDark={isDark} toggleDark={toggleDark} />
+        <ReactQueryDevtools />
+      </ThemeProvider>
     </>
   );
 }
