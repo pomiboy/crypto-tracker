@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { fetchCoins } from "../api";
+import { useSetRecoilState } from "recoil";
+import { isDarkAtom } from "../atoms";
 
 const Container = styled.div`
   padding: 0 25px;
@@ -58,12 +60,9 @@ interface CoinTypes {
   type: string;
 }
 
-interface ICoinsProps {
-  isDark: boolean;
-  toggleDark: () => void;
-}
+interface ICoinsProps {}
 
-function Coins({ isDark, toggleDark }: ICoinsProps) {
+function Coins({}: ICoinsProps) {
   // react query 활용
   const { isLoading, data } = useQuery<CoinTypes[]>("allCoins", fetchCoins);
   // react query 활용하지 않은 방법
@@ -79,11 +78,16 @@ function Coins({ isDark, toggleDark }: ICoinsProps) {
   //     setLoading(false);
   //   })();
   // }, []);
+
+  // recoil 사용하여 state 값 바꾸기
+  const setDarkAtom = useSetRecoilState(isDarkAtom);
+  const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
+
   return (
     <Container>
       <Header>
         <Title>Coins</Title>
-        <button onClick={toggleDark}>Toggle</button>
+        <button onClick={toggleDarkAtom}>Toggle</button>
       </Header>
       {isLoading ? (
         <p>Loading...</p>

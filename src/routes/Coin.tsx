@@ -172,11 +172,9 @@ interface PriceData {
   };
 }
 
-interface ICoinProps {
-  isDark: boolean;
-}
+interface ICoinProps {}
 
-function Coin({ isDark }: ICoinProps) {
+function Coin({}: ICoinProps) {
   const { coinId } = useParams<RouteParams>();
   const { state } = useLocation<RouteState>();
   const priceMatch = useRouteMatch("/:coinId/price"); // 내가 해당 URL에 있는지를 확인할 수 있는 훅
@@ -271,7 +269,7 @@ function Coin({ isDark }: ICoinProps) {
               <Price />
             </Route>
             <Route path={`/:coinId/chart`}>
-              <Chart coinId={coinId} isDark={isDark}/>
+              <Chart coinId={coinId}/>
             </Route>
           </Switch>
         </InfoContainer>

@@ -4,6 +4,8 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import Router from "./Router";
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme } from "./theme";
+import { useRecoilValue } from "recoil";
+import { isDarkAtom } from "./atoms";
 
 // 모오든 항목에 적용되는 스타일 설정
 const GlobalStyle = createGlobalStyle`
@@ -69,13 +71,12 @@ a {
 `;
 
 function App() {
-  const [isDark, setIsDark] = useState(false);
-  const toggleDark = () => setIsDark((current) => !current);
+  const isDark = useRecoilValue(isDarkAtom);
   return (
     <>
-      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+      <ThemeProvider theme={ isDark ? darkTheme : lightTheme }>
         <GlobalStyle />
-        <Router isDark={isDark} toggleDark={toggleDark} />
+        <Router />
         <ReactQueryDevtools />
       </ThemeProvider>
     </>
