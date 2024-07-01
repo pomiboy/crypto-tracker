@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { fetchCoins } from "../api";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { isDarkAtom } from "../atoms";
 
 const Container = styled.div`
@@ -11,10 +11,14 @@ const Container = styled.div`
 `;
 
 const Header = styled.header`
+  margin: 0 auto;
   height: 10vh;
+  width: 100%;
+  max-width: 400px;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 `;
 
 const CoinsList = styled.ul`
@@ -50,6 +54,35 @@ const CoinIcon = styled.img`
   height: 25px;
 `;
 
+const DarkTogglerContainer = styled.div`
+  position: absolute;
+  right: 0;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+interface IDarkToggler {
+  isDark: boolean;
+}
+
+const DarkToggler = styled.button<IDarkToggler>`
+  /* position: absolute;
+  right: 0; */
+  all: unset; // wow!
+  /* width: 15px;
+  height: 15px; */
+  width: max-content;
+  padding: 3px 5px;
+  border-radius: 10px;
+  background-color: ${(props) => (props.isDark ? "yellow" : "gray")};
+  transition: 0.2s;
+  color: black;
+  cursor: pointer;
+`;
+
+
 interface CoinTypes {
   id: string;
   name: string;
@@ -82,12 +115,15 @@ function Coins({}: ICoinsProps) {
   // recoil 사용하여 state 값 바꾸기
   const setDarkAtom = useSetRecoilState(isDarkAtom);
   const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
+  const isDark = useRecoilValue(isDarkAtom);
 
   return (
     <Container>
       <Header>
         <Title>Coins</Title>
-        <button onClick={toggleDarkAtom}>Toggle</button>
+        <DarkTogglerContainer>
+          <DarkToggler onClick={toggleDarkAtom} isDark={isDark}>{isDark ? "light" : "dark"}</DarkToggler>
+        </DarkTogglerContainer>
       </Header>
       {isLoading ? (
         <p>Loading...</p>
